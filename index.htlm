@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Proxy Site</title>
+    <title>Proxy Site</title>
     <style>
+        /* スタイルを追加 */
         body {
             background-color: #0f0f0f;
             color: #fff;
@@ -51,18 +52,24 @@
             height: 600px;
             margin-top: 20px;
             border-radius: 10px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        iframe.loaded {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <h1>Simple Proxy Site</h1>
+        <h1>Proxy Site</h1>
     </div>
-
     <div id="content">
-        <input type="text" id="urlInput" placeholder="Enter URL" />
+        <input type="text" id="urlInput" placeholder="Enter URL">
         <button onclick="loadUrl()">Go</button>
-        <iframe id="proxyIframe" src=""></iframe>
+        <iframe id="proxyIframe"></iframe>
+        <div id="errorMsg" style="color: red; display: none;"></div>
     </div>
 
     <script>
@@ -74,7 +81,20 @@
                 if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
                     formattedUrl = "http://" + formattedUrl;  // URLにhttp://を追加
                 }
-                document.getElementById('proxyIframe').src = formattedUrl;
+
+                // 外部プロキシサービスを使用してURLを取得
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const fullUrl = proxyUrl + formattedUrl;
+
+                const iframe = document.getElementById('proxyIframe');
+                iframe.src = fullUrl;
+                iframe.classList.remove("loaded");  // 再度アニメーションを適用
+                iframe.onload = function() {
+                    iframe.classList.add("loaded");  // 透明度を変更してフェードイン
+                };
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('errorMsg').textContent = 'Please enter a valid URL.';
             }
         }
     </script>
