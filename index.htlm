@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Proxy Site</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            background-color: #1a1a1a;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #5A5A5A;
+        }
+
+        #content {
+            padding: 20px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        iframe {
+            border: none;
+            width: 100%;
+            height: 600px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Simple Proxy Site</h1>
+    </div>
+
+    <div id="content">
+        <input type="text" id="urlInput" placeholder="Enter URL" />
+        <button onclick="loadUrl()">Go</button>
+        <iframe id="proxyIframe" src=""></iframe>
+    </div>
+
+    <script>
+        function loadUrl() {
+            const url = document.getElementById('urlInput').value;
+            if (url) {
+                // URLにhttp://やhttps://を追加してiframeに表示
+                let formattedUrl = url;
+                if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+                    formattedUrl = "http://" + formattedUrl;  // URLにhttp://を追加
+                }
+                document.getElementById('proxyIframe').src = formattedUrl;
+            }
+        }
+    </script>
+</body>
+</html>
